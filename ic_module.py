@@ -18,10 +18,9 @@ from keras.optimizers import Adam
 from keras.utils import np_utils
 
 FileNames = ["img1.npy", "img2.npy", "img3.npy"]
-ClassNames = ["Robert Downey jr", "Chris Evans", "Chris Hemsworth"]
+ClassNames = ["うさぎ", "いぬ", "ねこ"]
 hw = {"height":32, "width":32}        # リストではなく辞書型 中かっこで囲む
 
-google_drive_dir = "/content/drive/My Drive/gazoubunrui/"
 
 ################################
 ###### 画像データの前処理 ######
@@ -29,20 +28,20 @@ google_drive_dir = "/content/drive/My Drive/gazoubunrui/"
 def PreProcess(dirname, filename, var_amount=3):
     num = 0
     arrlist = []
-    files = glob.glob(dirname + "/*.jpg")
+    files = glob.glob(dirname + "/*.jpeg")
 
     for imgfile in files:
         img = load_img(imgfile, target_size=(hw["height"], hw["width"]))    # 画像ファイルの読み込み
         array = img_to_array(img) / 255                                     # 画像ファイルのnumpy化
         arrlist.append(array)                 # numpy型データをリストに追加
-        #for i in range(var_amount-1):
-        #    arr2 = array
-        #    arr2 = random_rotation(arr2, rg=360)
-        #    arrlist.append(arr2)              # numpy型データをリストに追加
+        for i in range(var_amount-1):
+            arr2 = array
+            arr2 = random_rotation(arr2, rg=360)
+            arrlist.append(arr2)              # numpy型データをリストに追加
         num += 1
 
     nplist = np.array(arrlist)
-    np.save(google_drive_dir + filename, nplist)
+    np.save(filename, nplist)
     print(">> " + dirname + "から" + str(num) + "個のファイル読み込み成功")
 
 
